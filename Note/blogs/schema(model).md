@@ -18,7 +18,7 @@ Now that we have succesfully installed the package we have to define (or bring i
 
 You must have a MongoDB server running on your machine (either directly installed, in a Docker container, etc.)
 
-```sh
+```js
 # index.js
 //Now we coonect to the server
 mongoose
@@ -52,3 +52,50 @@ To populate the cells in both the left columns and right column, we would have d
 This code above is exactly what creating a schema is about, you know a place to slide in information in a structured way.
 
 Now back to defining our data base schema
+// we will be creating a schema for an expense tracker API
+
+```js
+//import the mongoose library
+const mongoose = require("mongoose");
+
+//lets name how db structure **ExpenseSchema**
+const ExpenseSchema = new mongoose.Schema({
+  // now we shall create a custom headings and rules for filling body
+
+  decription: {
+    type: string,
+    required: true,
+  },
+  amount: {
+    type: Number,
+    required: true,
+  },
+  category: {
+    type: string,
+    enum: [
+      "Groceries",
+      "Leisure",
+      "Electronics",
+      "Utilities",
+      "Clothing",
+      "Health",
+      "Others",
+    ],
+    required: true,
+  },
+  date: {
+    type: Number,
+    default: date.now(),
+  },
+});
+```
+
+Let's break this down:
+
+**type: String, Number, Date:** These lines enforce the data type for each field. This is crucial for preventing errors and ensuring your data is predictable.
+
+**required: true:** This is a simple but powerful rule. It ensures that no expense can be saved to our database without a value for that field.
+
+**enum:** The enum property is our guardrail. It restricts the category to a specific list of strings we've defined. This keeps our data clean and consistent.
+
+**default:** This property automatically assigns a value if one isn't provided. For the date field, we're automatically setting the date to the current time.
