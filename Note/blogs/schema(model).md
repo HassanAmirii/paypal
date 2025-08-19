@@ -99,3 +99,22 @@ Let's break this down:
 **enum:** The enum property is our guardrail. It restricts the category to a specific list of strings we've defined. This keeps our data clean and consistent.
 
 **default:** This property automatically assigns a value if one isn't provided. For the date field, we're automatically setting the date to the current time.
+
+step 4: populating our database using model
+
+```js
+//we need to create a model of our ExpenseScehema
+
+const Expense = mongoose.model("Expense", ExpenseSchema);
+//This model is now our gate way to the collection of data in our db
+
+const newExpense = new Expense({
+  description: "airtime purchase",
+  amount: 35.0,
+  category: "Subscription",
+});
+
+newExpense.save(); // This line saves the new expense to the database
+```
+
+congratulations you can now create and populate a schema into mongodb with mongoose
