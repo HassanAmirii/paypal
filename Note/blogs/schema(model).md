@@ -58,12 +58,9 @@ Now back to defining our data base schema
 //import the mongoose library
 const mongoose = require("mongoose");
 
-//lets name how db structure **ExpenseSchema**
 const ExpenseSchema = new mongoose.Schema({
-  // now we shall create a custom headings and rules for filling body
-
-  decription: {
-    type: string,
+  description: {
+    type: String,
     required: true,
   },
   amount: {
@@ -71,7 +68,7 @@ const ExpenseSchema = new mongoose.Schema({
     required: true,
   },
   category: {
-    type: string,
+    type: String,
     enum: [
       "Groceries",
       "Leisure",
@@ -84,8 +81,8 @@ const ExpenseSchema = new mongoose.Schema({
     required: true,
   },
   date: {
-    type: Number,
-    default: date.now(),
+    type: Date,
+    default: Date.now,
   },
 });
 ```
