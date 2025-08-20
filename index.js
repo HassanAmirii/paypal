@@ -11,8 +11,25 @@ mongoose
   .connect("mongodb://localhost:27017/expense-tracker")
   .then(() => console.log("Database connected successfully!"))
   .catch((err) => console.error("Database connection error:", err));
-app.get("/", (req, res) => {
-  res.send("hello world");
+
+app.post("/expenses", async (req, res) => {
+  try {
+    const { description, amount, category } = req.body;
+
+    const newExpense = new Expense({
+      description,
+      amount,
+      category,
+    });
+
+    await newExpense.save();
+    res.status(201).json({
+      message: "successfully created a new expense",
+      expense: newExpense,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 });
 
 app.listen(port, () => {
