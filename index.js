@@ -1,10 +1,11 @@
 require("dotenv").config();
+const mongoose = require("mongoose");
+const Expense = require("./models/expense");
 const express = require("express");
 const app = express();
+app.use(express.json());
 const port = 3000;
 const API_KEY = process.env.API_KEY;
-
-const mongoose = require("mongoose");
 
 mongoose
   .connect("mongodb://localhost:27017/expense-tracker")
