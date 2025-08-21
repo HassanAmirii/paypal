@@ -48,7 +48,7 @@ app.delete("/expenses/:id", async (req, res) => {
     const deleteExpense = await Expense.findByIdAndDelete(itemid);
 
     if (!deleteExpense) {
-      res.status(404).json({
+      return res.status(404).json({
         message: "could'not find expense",
       });
     }
@@ -64,7 +64,18 @@ app.delete("/expenses/:id", async (req, res) => {
 app.patch("/expenses/:id", async (req, res) => {
   try {
     const itemid = req.params.id;
-    const updateExpense = await Expense.findByIdAndUpdate(itemid);
+    const updateData = req.body;
+    const updatedExpense = await Expense.findByIdAndUpdate(itemid, updateData, {
+      new: true,
+      runValidators: true,
+    });
+    if (!updatedExpense) {
+      res.status(404).json({ message: "could not find expense" });
+    }
+    res.status(200).json({
+      message: "succesfully updated expense",
+      expense: updatedExpense,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
