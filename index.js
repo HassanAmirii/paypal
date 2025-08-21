@@ -42,7 +42,7 @@ app.get("/expenses", async (req, res) => {
   }
 });
 
-app.delete("/expenses:id", async (req, res) => {
+app.delete("/expenses/:id", async (req, res) => {
   try {
     const itemid = req.params.id;
     const deleteExpense = await Expense.findByIdAndDelete(itemid);
@@ -56,6 +56,15 @@ app.delete("/expenses:id", async (req, res) => {
       message: "successfully deleted expense",
       expenses: deleteExpense,
     });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.patch("/expenses/:id", async (req, res) => {
+  try {
+    const itemid = req.params.id;
+    const updateExpense = await Expense.findByIdAndUpdate(itemid);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
