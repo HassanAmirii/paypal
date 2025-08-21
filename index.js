@@ -1,11 +1,9 @@
-require("dotenv").config();
 const mongoose = require("mongoose");
 const Expense = require("./models/expense");
 const express = require("express");
 const app = express();
 app.use(express.json());
 const port = 3000;
-const API_KEY = process.env.API_KEY;
 
 mongoose
   .connect("mongodb://localhost:27017/expense-tracker")
@@ -38,6 +36,25 @@ app.get("/expenses", async (req, res) => {
     res.status(200).json({
       message: "successfully retrieved all expenses",
       expenses: expenses,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete("/expenses:id", async (req, res) => {
+  try {
+    const itemid = req.params.id;
+    const deleteExpense = await Expense.findByIdAndDelete(itemid);
+
+    if (!deleteExpense) {
+      res.status(404).json({
+        message: "could'not find expense",
+      });
+    }
+    res.status(200).json({
+      message: "successfully deleted expense",
+      expenses: deleteExpense,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
