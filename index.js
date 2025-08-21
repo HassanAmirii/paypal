@@ -41,11 +41,26 @@ app.get("/expenses", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+app.get("/expenses/:id", async (req, res) => {
+  try {
+    const expenseID = req.params.id;
+    const expense = await Expense.findById(expenseID);
 
+    if (!expense) {
+      return res.status(404).json({ message: "could not find expense" });
+    }
+    res.status(200).json({
+      message: "successfully retrieved  expense",
+      expense: expense,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 app.delete("/expenses/:id", async (req, res) => {
   try {
-    const itemid = req.params.id;
-    const deleteExpense = await Expense.findByIdAndDelete(itemid);
+    const expenseID = req.params.id;
+    const deleteExpense = await Expense.findByIdAndDelete(expenseID);
 
     if (!deleteExpense) {
       return res.status(404).json({
@@ -63,14 +78,18 @@ app.delete("/expenses/:id", async (req, res) => {
 
 app.patch("/expenses/:id", async (req, res) => {
   try {
-    const itemid = req.params.id;
+    const expenseID = req.params.id;
     const updateData = req.body;
-    const updatedExpense = await Expense.findByIdAndUpdate(itemid, updateData, {
-      new: true,
-      runValidators: true,
-    });
+    const updatedExpense = await Expense.findByIdAndUpdate(
+      expenseID,
+      updateData,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
     if (!updatedExpense) {
-      res.status(404).json({ message: "could not find expense" });
+      return res.status(404).json({ message: "could not find expense" });
     }
     res.status(200).json({
       message: "succesfully updated expense",
