@@ -1,5 +1,3 @@
-# how to create a database schema (or model) with mongoose
-
 Step 1: Initialize a Node.js Project
 
 First, we need to create a Node.js project if you haven't done so already. Run the following command in your terminal:
@@ -29,27 +27,7 @@ mongoose
 
 step 3: let's define our data-base schema
 
-First, we must understand what a schema is; A schema is simply like a blueprint where we organize our data.
-
-If you have have worked with table in HTML, eg
-
-//Let's assume this a data-base
-
-| Left columns | Right columns |
-| ------------ | :-----------: |
-| left foo     |   right foo   |
-| left bar     |   right bar   |
-| left baz     |   right baz   |
-
-To populate the cells in both the left columns and right column, we would have declare
-
-```sh
-<thead> /... the category heading goes here </thead>
-
-<tbody> /... the category body goes here</tbody>
-```
-
-This code above is exactly what creating a schema is about, you know a place to slide in information in a structured way.
+First, we must understand what a schema is; A schema is simply like a blueprint where we organize our data, A place to slide in information in a structured way.
 
 Now back to defining our data base schema
 // we will be creating a schema for an expense tracker API
@@ -58,9 +36,12 @@ Now back to defining our data base schema
 //import the mongoose library
 const mongoose = require("mongoose");
 
+//lets name how db structure **ExpenseSchema**
 const ExpenseSchema = new mongoose.Schema({
-  description: {
-    type: String,
+  // now we shall create a custom headings and rules for filling body
+
+  decription: {
+    type: string,
     required: true,
   },
   amount: {
@@ -68,7 +49,7 @@ const ExpenseSchema = new mongoose.Schema({
     required: true,
   },
   category: {
-    type: String,
+    type: string,
     enum: [
       "Groceries",
       "Leisure",
@@ -82,7 +63,7 @@ const ExpenseSchema = new mongoose.Schema({
   },
   date: {
     type: Date,
-    default: Date.now,
+    default: date.now,
   },
 });
 ```
