@@ -1,3 +1,5 @@
+# how to create an expense database schema (or model) with mongoose
+
 Step 1: Initialize a Node.js Project
 
 First, we need to create a Node.js project if you haven't done so already. Run the following command in your terminal:
