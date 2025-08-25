@@ -77,3 +77,22 @@ Let's break this down:
 **default:** This property automatically assigns a value if one isn't provided. For the date field, we're automatically setting the date to the current time.
 
 step 4: populating our database using model
+
+```js
+// now we have to hash the password before saving
+useSchema.pre("save", function (next) {
+  if (!this.isModified("password")) {
+    return next();
+  }
+  try {
+    const salt = await brypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next()
+  } catch (error) {
+
+    next(error)
+  }
+});
+
+module.exports = mongoose.model(User, userSchema);
+```
