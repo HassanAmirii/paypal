@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Expense = require("./models/expense");
+const User = require("./models/user");
 const express = require("express");
 const app = express();
 app.use(express.json());
