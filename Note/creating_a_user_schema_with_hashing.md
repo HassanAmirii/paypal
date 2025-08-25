@@ -80,7 +80,7 @@ step 4: populating our database using model
 
 ```js
 // now we have to hash the password before saving
-useSchema.pre("save", function (next) {
+userSchema.pre("save", function (next) {
   if (!this.isModified("password")) {
     return next();
   }
@@ -96,3 +96,43 @@ useSchema.pre("save", function (next) {
 
 module.exports = mongoose.model(User, userSchema);
 ```
+
+let's break this down
+
+```js
+userSchema.pre("save", function (next) {
+```
+
+- the pre-save functio is a middle ware that runs before any informatio get saved to the database
+
+```js
+if (!this.isModified("password")) {
+  return next();
+}
+```
+
+- this means if the password is unchanged proceed to to the next function (save)
+
+```js
+try {
+    const salt = await brypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next()
+```
+
+- this create a random string and 10 is the cost factor (number of computational rounds which is 2 to the power 10 = 1024 times before it generate the final hash). Higher = slower but safer.
+- when it is done hashing the next() proceed to saving
+
+```js
+  } catch (error) {
+
+    next(error)
+  }
+});
+
+module.exports = mongoose.model(User, userSchema);
+```
+
+- alright this is in charge of handling error the **next(error)** stops the assembly line and sends error message to catch
+
+- we then export so we can use the **User** model in our app.js
