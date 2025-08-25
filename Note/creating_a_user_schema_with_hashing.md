@@ -80,21 +80,20 @@ step 4: populating our database using model
 
 ```js
 // now we have to hash the password before saving
-userSchema.pre("save", function (next) {
+userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     return next();
   }
   try {
     const salt = await brypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
-    next()
+    next();
   } catch (error) {
-
-    next(error)
+    next(error);
   }
 });
 
-module.exports = mongoose.model(User, userSchema);
+module.exports = mongoose.model("User", userSchema);
 ```
 
 let's break this down
@@ -136,3 +135,19 @@ module.exports = mongoose.model(User, userSchema);
 - alright this is in charge of handling error the **next(error)** stops the assembly line and sends error message to catch
 
 - we then export so we can use the **User** model in our app.js
+
+**to use in #app.js we simply have to put this at the top of our file**
+
+```js
+const User = require("./models/user");
+```
+
+to create a new model:
+
+```js
+const newUser = new User({
+  ...rest of the code..
+})
+
+await newUser.save();
+```
