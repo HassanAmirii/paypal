@@ -43,9 +43,9 @@ There are three essentials that jwt contains.
 
  <br>
 
-3. The **signed token** is formed by mixing and hashing the header, payload, and the server's secret key.
+3. The **signed token** is formed using the header, payload, and the server's secret key, by the specified algorithm in the header's meta data
 
- <br>
+   <br>
 
 Upon subsequent requests, the server just have re sign token which contains (server's secret key, payload, header). and compare it with the tendered one by jwt. if it matches and the jwt's token has'nt expired ,
 
