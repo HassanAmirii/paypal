@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Expense = require("./models/expense");
 const User = require("./models/user");
+const auth = require("./middleware/auth");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const express = require("express");
@@ -46,9 +47,30 @@ app.post("/login", async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ error: "invalid credentials" });
     }
+
+    const payload = {
+      id: user._id,
+      email: user.email,
+    };
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    res.status(200).json({
+      message: "User logged in successfully",
+      token: token,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+});
+
+// --- Protected Route: Accessible only with a valid JWT ---
+app.get("/dashboard", auth, (req, res) => {
+  res.json({
+    message: `Welcome to your dashboard, ${req.user.email}!`,
+    userID: req.user.id,
+  });
 });
 
 app.get("/users", async (req, res) => {
@@ -64,7 +86,7 @@ app.get("/users", async (req, res) => {
   }
 });
 
-app.post("/expenses", async (req, res) => {
+app.post("/expense", auth, async (req, res) => {
   try {
     const { description, amount, category } = req.body;
 
@@ -72,6 +94,7 @@ app.post("/expenses", async (req, res) => {
       description,
       amount,
       category,
+      owner: req.user.id,
     });
 
     await newExpense.save();
@@ -84,33 +107,19 @@ app.post("/expenses", async (req, res) => {
   }
 });
 
-app.get("/expenses", async (req, res) => {
+app.get("/expenses", auth, async (req, res) => {
   try {
-    const expenses = await Expense.find();
+    const ownerId = req.user.id;
+    const expenses = await Expense.find({ owner: ownerId });
     res.status(200).json({
-      message: "successfully retrieved all expenses",
+      message: "successfully retrieved all your expenses",
       expenses: expenses,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
-app.get("/expenses/:id", async (req, res) => {
-  try {
-    const expenseID = req.params.id;
-    const expense = await Expense.findById(expenseID);
 
-    if (!expense) {
-      return res.status(404).json({ message: "could not find expense" });
-    }
-    res.status(200).json({
-      message: "successfully retrieved  expense",
-      expense: expense,
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 app.delete("/expenses/:id", async (req, res) => {
   try {
     const expenseID = req.params.id;
