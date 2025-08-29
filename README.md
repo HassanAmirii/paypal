@@ -1,12 +1,4 @@
-<p align="center"# Expense Tracker API
-
-<!-- <p align="center">
-  <a href="https://github.com/HassanAmirii/paypal" rel="noopener">
-    <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo">
-  </a> -->
-</p>
-
-<h3 align="center">Expense Tracker API</h3>
+<h1 align="center">Expense Tracker API</h1>
 
 <div align="center">
 
@@ -55,7 +47,7 @@ This project goes beyond basic CRUD operations by implementing a full **JSON Web
 
 ---
 
-## � Getting Started <a name="getting_started"></a>
+## Getting Started <a name="getting_started"></a>
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
@@ -98,3 +90,75 @@ Once the dependencies are installed and MongoDB is running, you can start the AP
 ```bash
 node index.js
 ```
+
+The server will start on `http://localhost:3000`.
+
+---
+
+## Deployment <a name="deployment"></a>
+
+The application can be deployed on a live system using cloud providers like **Render** or **Fly.io**. Ensure you configure your environment variables and update the `MONGO_URI` to a hosted database instance (e.g., MongoDB Atlas).
+
+---
+
+## API Endpoints
+
+This section documents the primary API endpoints and their functionality. You can interact with the API using tools like Postman, Insomnia, or a frontend application.
+
+### Authentication
+
+#### `POST /register`
+
+- **Description**: Creates a new user account.
+- **Body**: `{"username": "tester", "email": "tester@example.com", "password": "secure123"}`
+
+#### `POST /login`
+
+- **Description**: Authenticates a user and returns a JWT token.
+- **Body**: `{"email": "tester@example.com", "password": "secure123"}`
+
+### Protected Expense Routes
+
+These routes require a valid JWT in the `Authorization` header.
+
+**Authorization Header Format**: `Authorization: Bearer <your_jwt_token_here>`
+
+#### `POST /expenses`
+
+- **Description**: Creates a new expense linked to the authenticated user.
+- **Body**: `{"description": "Lunch", "amount": 25.5, "category": "Food"}`
+
+#### `GET /expenses`
+
+- **Description**: Retrieves all expenses for the authenticated user.
+
+#### `PATCH /expenses/:id`
+
+- **Description**: Updates an expense for the authenticated user.
+
+#### `DELETE /expenses/:id`
+
+- **Description**: Deletes an expense for the authenticated user.
+
+---
+
+## Built Using <a name="built_using"></a>
+
+- [Node.js](https://nodejs.org/en/) - A JavaScript runtime built on Chrome's V8 JavaScript engine.
+- [Express.js](https://expressjs.com/) - A fast, unopinionated, minimalist web framework for Node.js.
+- [MongoDB](https://www.mongodb.com/) - A flexible NoSQL document database.
+- [Mongoose](https://mongoosejs.com/) - An elegant MongoDB object modeling tool for Node.js.
+- [bcrypt](https://www.npmjs.com/package/bcrypt) - A library to help you hash passwords.
+- [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) - A library to implement JSON Web Tokens.
+- [dotenv](https://www.npmjs.com/package/dotenv) - A module to load environment variables from a `.env` file.
+
+---
+
+## Author <a name="authors"></a>
+
+- [@HassanAmirii](https://github.com/HassanAmirii) - Primary Developer
+
+## Acknowledgments <a name="acknowledgement"></a>
+
+- Thanks to the open-source community for providing the tools and inspiration for this project.
+- Special thanks to the **Node.js**, **Express**, and **MongoDB** teams for creating such powerful and user-friendly technologies.
