@@ -38,6 +38,7 @@ This project goes beyond basic CRUD operations by implementing a full **JSON Web
 - **JWT-based Authorization**: Protects API endpoints using a JSON Web Token, ensuring only authenticated users can access their private data.
 - **Personalized Data**: Each expense is linked to a specific user, allowing users to view and manage only their own financial records.
 - **Full CRUD Operations**: Complete functionality to **Create**, **Read**, **Update**, and **Delete** expenses.
+- **admin authentication**: Added a secure admin authentication to manage user data.
 
 ## Getting Started <a name="getting_started"></a>
 
