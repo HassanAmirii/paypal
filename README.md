@@ -16,8 +16,6 @@
   <br>
 </p>
 
-## Table of Contents
-
 - [About](#about)
 - [Features](#features)
 - [Getting Started](#getting_started)
@@ -27,15 +25,11 @@
 - [Authors](#authors)
 - [Acknowledgments](#acknowledgement)
 
----
-
 ## About <a name="about"></a>
 
 The **Expense Tracker API** is a complete backend solution for tracking personal finances. It provides a secure and scalable platform for users to manage their expenses. The application is built with **Node.js** and the **Express.js** framework, using **MongoDB** as its NoSQL database for flexible data storage.
 
 This project goes beyond basic CRUD operations by implementing a full **JSON Web Token (JWT)** authentication system. This ensures that user data is protected and that each user can only access their own private expense records. The architecture is designed to be easily consumed by any modern frontend application.
-
----
 
 ## Features <a name="features"></a>
 
@@ -44,8 +38,6 @@ This project goes beyond basic CRUD operations by implementing a full **JSON Web
 - **JWT-based Authorization**: Protects API endpoints using a JSON Web Token, ensuring only authenticated users can access their private data.
 - **Personalized Data**: Each expense is linked to a specific user, allowing users to view and manage only their own financial records.
 - **Full CRUD Operations**: Complete functionality to **Create**, **Read**, **Update**, and **Delete** expenses.
-
----
 
 ## Getting Started <a name="getting_started"></a>
 
@@ -78,8 +70,7 @@ A step-by-step series of examples that tell you how to get a development environ
     Create a `.env` file in the root directory and add the following variables.
 
     ```
-    PORT=3000
-    MONGO_URI=mongodb://localhost:27017/expense-tracker
+
     JWT_SECRET=your_super_secret_and_long_random_string_here
     ```
 
@@ -98,8 +89,6 @@ The server will start on `http://localhost:3000`.
 ## Deployment <a name="deployment"></a>
 
 The application can be deployed on a live system using cloud providers like **Render** or **Fly.io**. Ensure you configure your environment variables and update the `MONGO_URI` to a hosted database instance (e.g., MongoDB Atlas).
-
----
 
 ## API Endpoints
 
@@ -152,8 +141,6 @@ These routes require a valid JWT in the `Authorization` header.
 - [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) - A library to implement JSON Web Tokens.
 - [dotenv](https://www.npmjs.com/package/dotenv) - A module to load environment variables from a `.env` file.
 
----
-
 ## Author <a name="authors"></a>
 
 - [@HassanAmirii](https://github.com/HassanAmirii) - Primary Developer
@@ -162,3 +149,5 @@ These routes require a valid JWT in the `Authorization` header.
 
 - Thanks to the open-source community for providing the tools and inspiration for this project.
 - Special thanks to the **Node.js**, **Express**, and **MongoDB** teams for creating such powerful and user-friendly technologies.
+
+👉[project idea from roadmap.sh](https://roadmap.sh/projects/expense-tracker-api)
