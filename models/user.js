@@ -28,6 +28,8 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+
+  isAdmin: false,
 });
 
 userSchema.pre("save", async function (next) {

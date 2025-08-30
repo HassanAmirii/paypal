@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Expense = require("./models/expense");
 const User = require("./models/user");
 const auth = require("./middleware/auth");
+const adminAuth = require("./middleware/adminAuth");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const express = require("express");
@@ -15,6 +16,7 @@ mongoose
   .then(() => console.log("Database connected successfully!"))
   .catch((err) => console.error("Database connection error:", err));
 
+// register a new user
 app.post("/register", async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -35,6 +37,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
+// login a user
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -51,7 +54,9 @@ app.post("/login", async (req, res) => {
     const payload = {
       id: user._id,
       email: user.email,
+      admin: user.isAdmin,
     };
+
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
@@ -65,7 +70,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// --- Protected Route: Accessible only with a valid JWT ---
+// user dashboard after login (protected route)
 app.get("/dashboard", auth, (req, res) => {
   res.json({
     message: `Welcome to your dashboard, ${req.user.email}!`,
@@ -73,7 +78,8 @@ app.get("/dashboard", auth, (req, res) => {
   });
 });
 
-app.get("/users", async (req, res) => {
+// Get all users info in db (accessed only by admin)
+app.get("/users", adminAuth, async (req, res) => {
   try {
     const users = await User.find();
 
@@ -85,6 +91,8 @@ app.get("/users", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// create an expense (protected route)
 
 app.post("/expense", auth, async (req, res) => {
   try {
@@ -107,6 +115,7 @@ app.post("/expense", auth, async (req, res) => {
   }
 });
 
+// get all expenses of a particular user
 app.get("/expenses", auth, async (req, res) => {
   try {
     const ownerId = req.user.id;
@@ -120,7 +129,7 @@ app.get("/expenses", auth, async (req, res) => {
   }
 });
 
-app.delete("/expenses/:id", async (req, res) => {
+app.delete("/expense/:id", auth, async (req, res) => {
   try {
     const expenseID = req.params.id;
     const deleteExpense = await Expense.findByIdAndDelete(expenseID);
@@ -139,7 +148,7 @@ app.delete("/expenses/:id", async (req, res) => {
   }
 });
 
-app.patch("/expenses/:id", async (req, res) => {
+app.patch("/expenses/:id", auth, async (req, res) => {
   try {
     const expenseID = req.params.id;
     const updateData = req.body;
