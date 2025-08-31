@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema({
   },
 
   isAdmin: false,
+  type: Boolean,
 });
 
 userSchema.pre("save", async function (next) {
